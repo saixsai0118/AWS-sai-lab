@@ -1,12 +1,16 @@
 services:
+
   wordpress:
     image: wordpress
     restart: always
     container_name: wordpress-web
     ports:
-      - '80:80'
-    env_file:
-      - ./env/wordpress.env
+      - 80:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: secrect
+      WORDPRESS_DB_NAME: WPdb
     volumes:
       - ./html:/var/www/html
 
@@ -14,10 +18,13 @@ services:
     image: mysql:5.7
     restart: always
     container_name: mysql-db
-    env_file:
-      - ./env/mysql.env
+    environment:
+      MYSQL_DATABASE: WPdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: secrect
+      MYSQL_ROOT_PASSWORD: secrect
     volumes:
-      - ./db_data:/var/lib/mysql:rw
+      - ./db_data:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin
